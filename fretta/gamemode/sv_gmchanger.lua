@@ -194,12 +194,12 @@ function GM:CountVotesForChange()
 	return true
 end
 
-function GM:VoteForChange( ply )
+function GM:VoteForChange( pl )
 
 	if ( GetConVarNumber( "fretta_voting" ) == 0 ) then return end
-	if ( ply:GetNWBool( "WantsVote" ) ) then return end
+	if ( pl:GetNWBool( "WantsVote" ) ) then return end
 	
-	ply:SetNWBool( "WantsVote", true )
+	pl:SetNWBool( "WantsVote", true )
 	
 	local VotesNeeded = GAMEMODE:GetVotesNeededForChange()
 	local NeedTxt = "" 
@@ -207,12 +207,12 @@ function GM:VoteForChange( ply )
 	
 	if ( CurTime() < GetConVarNumber( "fretta_votegraceperiod" ) ) then // can't vote too early on
 		local timediff = math.Round( GetConVarNumber( "fretta_votegraceperiod" ) - CurTime() );
-		BroadcastLua( "chat.AddText( Entity("..ply:EntIndex().."), Color( 255, 255, 255 ), [[ voted to change the gamemode]] )" )
+		BroadcastLua( "chat.AddText( Entity("..pl:EntIndex().."), Color( 255, 255, 255 ), [[ voted to change the gamemode]] )" )
 	else
-		BroadcastLua( "chat.AddText( Entity("..ply:EntIndex().."), Color( 255, 255, 255 ), [[ voted to change the gamemode]] "..NeedTxt.." )" )
+		BroadcastLua( "chat.AddText( Entity("..pl:EntIndex().."), Color( 255, 255, 255 ), [[ voted to change the gamemode]] "..NeedTxt.." )" )
 	end
 	
-	Msg( ply:Nick() .. " voted to change the gamemode\n" )
+	Msg( pl:Nick() .. " voted to change the gamemode\n" )
 	
 	timer.Simple( 5, function() GAMEMODE:CountVotesForChange() end )
 
